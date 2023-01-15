@@ -2,38 +2,54 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
 import React, { Component } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
 import PostmanForm from "./postmanForm";
 import SelectTab from "./selectTab";
 import Response from "./response";
-import http from "../services/httpServices"
-import ErrorScreen from "./errorScreen";
-import {getData} from "../services/httpServices"
+import { getData, getToken, getUserData } from "../services/httpServices";
 
 class MainComponent extends Component {
   state = {
-    formData:"", jsonText:"", paramData:"", headerData:"",
-    setApi:{},
-    satausApi:""
+    formData: "",
+    jsonText: "",
+    paramData: "",
+    headerData: "",
+    setApi: {},
+    statusAPI: "",
   };
-  handlesumbit= async (data)=>{
-let response = await http.getData(data);
- console.log("response",response);
-this.setState({setApi:response.data,satausApi:response.status})
+  // handleSubmit = async (data) => {
+  //   let response = await http.getData(data);
+  //   console.log("response", response);
+  //   this.setState({ setApi: response.data, statusAPI: response.status });
+  // };
+
+  componentDidMount() {
+    const fetchData = async () => {
+      const request = {
+        endPoint: "/todos/1",
+        baseURL: "https://jsonplaceholder.typicode.com",
+        header: {},
+        method: "GET",
+        responseType: "json",
+        payload: "",
+      };
+      const res = await getData(request);
+      console.log(res.data);
+
+      // const token = await getToken();
+      // const res = await getUserData(token.data);
+      // console.log(res);
+    };
+    fetchData();
   }
 
-  // let response = await http.getData(data);
-
   render() {
-    const {  formData, jsonText, paramData, headerData,setApi,satausApi} = this.state;
-    console.log(setApi);
+    const { setApi, statusAPI } = this.state;
 
     return (
       <div className="container bg-light">
-    
-      <PostmanForm  onSumbit={this.handlesumbit} />
-      <SelectTab />
-   <Response  data={setApi}  dataStatus={satausApi} />
+        <PostmanForm onSubmit={this.handleSubmit} />
+        <SelectTab />
+        <Response data={setApi} dataStatus={statusAPI} />
       </div>
     );
   }

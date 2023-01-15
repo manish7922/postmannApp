@@ -3,22 +3,49 @@ import axios from "axios";
 
 // const baseURL = "http://localhost:2411";
 
-  function getData(formData, jsonText, paramData, headerData) {
-    return  axios({
-        method: formData.Formmethod ,
-        url: formData.Formurl,
-        body: jsonText,
-        headers: headerData,
-        params: paramData
-    })
+export const getData = (request) => {
+  const { header } = request;
+  const config = {
+    baseURL: request.baseURL,
+    headers: {
+      header,
+    },
+    method: request.method ? request.method : "GET",
+    responseType: request.responseType ? request.responseType : "json",
+  };
+  const newAxios = axios.create(config);
+  try {
+    const data = newAxios(request.endPoint, request.payload);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
 
-}
-// function post(url, obj) {
-//   return axois.post(baseURL + url, obj);
-// }
+export const getToken = () => {
+  try {
+    const data = axios.get(
+      "https://datastudent.onrender.com/testServer/getToken"
+    );
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
 
-
-
-export default {
-getData,
+export const getUserData = (token) => {
+  try {
+    const data = axios(
+      "https://datastudent.onrender.com/testServer/testServer/students",
+      {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
