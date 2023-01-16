@@ -29,6 +29,7 @@ class SelectTab extends Component {
   };
 
   render() {
+    const { handleBodyData } = this.props;
     const {
       view,
       paramsData,
@@ -112,7 +113,17 @@ class SelectTab extends Component {
           </div>
           <div className="col-7"></div>
           <div className="row">
-            <CreateJson text={"json"} data={jsonData} setData={setJsonData} />
+            <div className="container">
+              <div className="row" style={{ marginTop: "10px" }}>
+                <textarea
+                  rows="4"
+                  cols="20"
+                  value={this.props.body}
+                  onChange={handleBodyData}
+                ></textarea>
+              </div>
+            </div>
+
             {/* <TableForm /> */}
           </div>
         </div>

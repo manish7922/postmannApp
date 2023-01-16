@@ -15,40 +15,35 @@ class MainComponent extends Component {
     headerData: "",
     setApi: {},
     statusAPI: "",
+    body: "",
   };
-  // handleSubmit = async (data) => {
-  //   let response = await http.getData(data);
-  //   console.log("response", response);
-  //   this.setState({ setApi: response.data, statusAPI: response.status });
-  // };
-
-  componentDidMount() {
-    const fetchData = async () => {
-      const request = {
-        endPoint: "/todos/1",
-        baseURL: "https://jsonplaceholder.typicode.com",
-        header: {},
-        method: "GET",
-        responseType: "json",
-        payload: "",
-      };
-      const res = await getData(request);
-      console.log(res.data);
-
-      // const token = await getToken();
-      // const res = await getUserData(token.data);
-      // console.log(res);
+  handleSubmit = async (value) => {
+    const { FormUrl, Formmethod } = value;
+    const request = {
+      url: FormUrl,
+      method: Formmethod,
+      payload: JSON.parse(this.state.body),
     };
-    fetchData();
-  }
+
+    const res = await getData(request);
+
+    this.setState({ setApi: res.data, statusAPI: res.status });
+  };
+
+  handleBody = (e) => {
+    const { value } = e.target;
+
+    this.setState({ body: value });
+  };
 
   render() {
     const { setApi, statusAPI } = this.state;
-
+    console.log(this.state.body);
     return (
       <div className="container bg-light">
         <PostmanForm onSubmit={this.handleSubmit} />
-        <SelectTab />
+
+        <SelectTab body={this.state.body} handleBodyData={this.handleBody} />
         <Response data={setApi} dataStatus={statusAPI} />
       </div>
     );

@@ -4,18 +4,13 @@ import axios from "axios";
 // const baseURL = "http://localhost:2411";
 
 export const getData = (request) => {
-  const { header } = request;
-  const config = {
-    baseURL: request.baseURL,
-    headers: {
-      header,
-    },
-    method: request.method ? request.method : "GET",
-    responseType: request.responseType ? request.responseType : "json",
-  };
-  const newAxios = axios.create(config);
   try {
-    const data = newAxios(request.endPoint, request.payload);
+    const data = axios({
+      url: request.url,
+      method: request.method ? request.method : "GET",
+      data: request.payload,
+      headers: request.header,
+    });
     return data;
   } catch (error) {
     return error;

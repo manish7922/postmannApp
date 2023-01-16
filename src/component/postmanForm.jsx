@@ -19,8 +19,6 @@ class PostmanForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log("handel sumbit", this.state.formData);
-    console.log("handel Data", this.state.Data);
     this.props.onSubmit(this.state.formData);
     this.fetchData(this.state.formData);
   };
